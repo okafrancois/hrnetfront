@@ -51,7 +51,6 @@ jobs:
 
       # Build the Docker image
       - name: Build
-        cache-from: type=registry,ref=gcr.io/$PROJECT_ID/$IMAGE:latest
         run: |-
           docker build \
             --tag "gcr.io/$PROJECT_ID/$IMAGE:$GITHUB_SHA" \
