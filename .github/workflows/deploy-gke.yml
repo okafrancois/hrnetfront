@@ -51,6 +51,8 @@ jobs:
 
       # Build the Docker image
       - name: Build
+        cache-from: type=gha
+        cache-to: type=gha,mode=max
         run: |-
           docker build \
             --tag "gcr.io/$PROJECT_ID/$IMAGE:$GITHUB_SHA" \
