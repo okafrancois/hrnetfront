@@ -51,6 +51,7 @@ jobs:
 
       # Build the Docker image
       - name: Build
+        cache-from: type=registry,ref=gcr.io/$PROJECT_ID/$IMAGE:$GITHUB_SHA
         run: |-
           docker build \
             --tag "gcr.io/$PROJECT_ID/$IMAGE:$GITHUB_SHA" \
@@ -68,3 +69,4 @@ jobs:
         run: |-
           kubectl run $DEPLOYMENT_NAME --image=gcr.io/$PROJECT_ID/$IMAGE:$GITHUB_SHA --port=8080
           kubectl expose deployment $DEPLOYMENT_NAME --type=LoadBalancer --port 80 --target-port 8080
+          kubectl get service $DEPLOYMENT_NAME
