@@ -63,9 +63,8 @@ jobs:
         run: |-
           docker push "gcr.io/$PROJECT_ID/$IMAGE:$GITHUB_SHA"
 
-      # Deploy the Docker image to the GKE cluster
+      # Deploy the Docker image to the GKE cluster without using deployment.yaml
       - name: Deploy
         run: |-
-          kubectl apply -f ./deployment.yml
-          kubectl rollout status deployment/$DEPLOYMENT_NAME
-          kubectl get services -o wide
+          kubectl run $DEPLOYMENT_NAME --image=gcr.io/$PROJECT_ID/$IMAGE:$GITHUB_SHA --port=8080
+          kubectl expose deployment $DEPLOYMENT_NAME --type=LoadBalancer --port 80 --target-port 8080
