@@ -65,6 +65,7 @@ jobs:
       - name: Publish
         run: |-
           docker push "gcr.io/$PROJECT_ID/$IMAGE:$GITHUB_SHA"
+          docker push "gcr.io/$PROJECT_ID/$IMAGE:latest"
 
       # Deploy the Docker image to the GKE cluster
       - name: Deploy
