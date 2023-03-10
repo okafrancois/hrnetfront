@@ -2,54 +2,54 @@
 apiVersion: "v1"
 kind: "ConfigMap"
 metadata:
-  name: "hrnetapp-config-aiyn"
+  name: "nginx-1-config-undm"
   namespace: "default"
   labels:
-    app: "hrnetapp"
+    app: "nginx-1"
 data:
-  VITE_API_URL: "http://localhost:3000/api/v1"
+  VITE_API_URL: "local.dev/api"
 ---
 apiVersion: "apps/v1"
 kind: "Deployment"
 metadata:
-  name: "hrnetapp"
+  name: "nginx-1"
   namespace: "default"
   labels:
-    app: "hrnetapp"
+    app: "nginx-1"
 spec:
-  replicas: 1
+  replicas: 3
   selector:
     matchLabels:
-      app: "hrnetapp"
+      app: "nginx-1"
   template:
     metadata:
       labels:
-        app: "hrnetapp"
+        app: "nginx-1"
     spec:
       containers:
         - name: "hrnetfrontend-sha256-1"
-          image: "gcr.io/hrnetapp/hrnetfrontend:latest"
+          image: "gcr.io/hrnetapp/hrnetfrontend@sha256:64df1fc42f9b7a77af6dc5fd6cfc4f7de907340e50255db12fdf1210d34df529"
           env:
             - name: "VITE_API_URL"
               valueFrom:
                 configMapKeyRef:
                   key: "VITE_API_URL"
-                  name: "hrnetapp-config-aiyn"
+                  name: "nginx-1-config-undm"
 ---
 apiVersion: "autoscaling/v2"
 kind: "HorizontalPodAutoscaler"
 metadata:
-  name: "hrnetapp-hpa-3c38"
+  name: "nginx-1-hpa-rkgl"
   namespace: "default"
   labels:
-    app: "hrnetapp"
+    app: "nginx-1"
 spec:
   scaleTargetRef:
     kind: "Deployment"
-    name: "hrnetapp"
+    name: "nginx-1"
     apiVersion: "apps/v1"
   minReplicas: 1
-  maxReplicas: 1
+  maxReplicas: 5
   metrics:
     - type: "Resource"
       resource:
